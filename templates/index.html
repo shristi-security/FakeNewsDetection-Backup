@@ -1,219 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Fake News Detection</title>
+    <title>Fake News Detector | Live Web Verification</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e3a8a);
             margin: 0;
-            padding: 0;
             min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0b1120, #111827);
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
         }
 
         .container {
-            width: 80%;
-            max-width: 900px;
-            margin: 50px auto;
-            background: #f8fafc;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+            width: 100%;
+            max-width: 720px;
+            text-align: center;
         }
 
         .badge {
             display: inline-block;
-            padding: 6px 12px;
-            margin-bottom: 12px;
+            padding: 7px 12px;
             border-radius: 20px;
-            background: #dbeafe;
-            color: #1d4ed8;
-            font-size: 12px;
-            font-weight: bold;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+            font-size: 11px;
+            font-weight: 700;
             letter-spacing: 0.5px;
+            margin-bottom: 20px;
         }
 
         h1 {
-            text-align: center;
-            color: #0f172a;
-            font-size: 36px;
-            margin-bottom: 10px;
+            margin: 0;
+            font-size: 42px;
+            line-height: 1.2;
         }
 
         .subtitle {
-            text-align: center;
-            color: #475569;
-            margin-bottom: 30px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 220px;
-            padding: 18px;
-            box-sizing: border-box;
-            border: 1.5px solid #d1d5db;
-            border-radius: 12px;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-            color: #1e293b;
-            background: #ffffff;
-            resize: vertical;
-            outline: none;
-            transition: 0.2s ease;
-        }
-
-        textarea::placeholder {
+            margin: 14px auto 30px;
+            max-width: 580px;
             color: #94a3b8;
-        }
-
-        textarea:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-        }
-
-        button {
-            display: block;
-            margin: 22px auto;
-            padding: 14px 38px;
-            border: none;
-            border-radius: 10px;
-            background: #2563eb;
-            color: white;
             font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
-            transition: all 0.2s ease;
+            line-height: 1.7;
         }
 
-        button:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.30);
+        .card {
+            padding: 28px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
         }
 
-        button:active {
-            transform: translateY(0);
+        .card h2 {
+            margin: 0 0 12px;
+            font-size: 20px;
         }
 
-        .result {
-            text-align: center;
-            margin-top: 25px;
-            padding: 18px;
-            border-radius: 10px;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .result.fake {
-            background: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #fca5a5;
-        }
-
-        .result.real {
-            background: #dcfce7;
-            color: #15803d;
-            border: 1px solid #86efac;
-        }
-
-        .prediction-text {
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .result-explanation {
-            margin: 10px 0 0;
-            font-size: 14px;
-            font-weight: normal;
-            line-height: 1.5;
-        }
-
-        .how-it-works {
-            margin-top: 45px;
-            padding-top: 30px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .how-it-works h2 {
-            text-align: center;
-            color: #0f172a;
-            font-size: 24px;
-            margin-bottom: 25px;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-        }
-
-        .step {
-            text-align: center;
-            padding: 18px 12px;
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .step-number {
-            width: 34px;
-            height: 34px;
-            margin: 0 auto 12px;
-            border-radius: 50%;
-            background: #2563eb;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .step h3 {
-            color: #1e293b;
-            font-size: 16px;
-            margin: 8px 0;
-        }
-
-        .step p {
-            color: #64748b;
-            font-size: 13px;
-            line-height: 1.5;
+        .card p {
             margin: 0;
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
-        @media (max-width: 700px) {
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 18px;
+        }
 
-            .container {
-                width: 90%;
-                padding: 25px;
-                box-sizing: border-box;
-            }
+        .feature {
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
 
+        .feature strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #f8fafc;
+            font-size: 13px;
+        }
+
+        .feature span {
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .status {
+            margin-top: 18px;
+            padding: 13px;
+            border-radius: 10px;
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.18);
+            color: #86efac;
+            font-size: 13px;
+        }
+
+        .footer {
+            margin-top: 24px;
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
             h1 {
-                font-size: 28px;
+                font-size: 32px;
             }
 
-            .subtitle {
-                font-size: 14px;
-            }
-
-            textarea {
-                height: 180px;
-            }
-
-            .steps {
+            .features {
                 grid-template-columns: 1fr;
-                gap: 12px;
             }
 
-            .step {
-                padding: 16px;
+            .card {
+                padding: 22px;
             }
         }
     </style>
@@ -221,127 +138,66 @@
 
 <body>
 
-    <div class="container">
+    <main class="container">
 
-        <div class="badge">NLP & MACHINE LEARNING</div>
-
-        <h1>Fake News Detection</h1>
-
-        <p class="subtitle">
-            Analyze news content using Natural Language Processing and Machine Learning.
-        </p>
-
-        <form method="POST">
-
-            <textarea
-                name="news"
-                placeholder="Paste or type the news article here..."
-                required
-            ></textarea>
-
-            <button type="submit">
-                Check News
-            </button>
-
-        </form>
-
-        {% if prediction %}
-
-            <div class="result
-                {% if 'FAKE NEWS' in prediction %}
-                    fake
-                {% else %}
-                    real
-                {% endif %}
-            ">
-
-                <div class="prediction-text">
-                    {{ prediction }}
-                </div>
-
-                {% if 'FAKE NEWS' in prediction %}
-
-                    <p class="result-explanation">
-                        The model predicts that this article is likely to contain
-                        patterns associated with fake news.
-                    </p>
-
-                {% else %}
-
-                    <p class="result-explanation">
-                        The model predicts that this article is likely to contain
-                        patterns associated with real news.
-                    </p>
-
-                {% endif %}
-
-            </div>
-
-        {% endif %}
-
-        <div class="how-it-works">
-
-            <h2>How It Works</h2>
-
-            <div class="steps">
-
-                <div class="step">
-
-                    <div class="step-number">1</div>
-
-                    <h3>Enter News</h3>
-
-                    <p>
-                        Paste or type a news article into the text box.
-                    </p>
-
-                </div>
-
-                <div class="step">
-
-                    <div class="step-number">2</div>
-
-                    <h3>NLP Processing</h3>
-
-                    <p>
-                        The text is cleaned and converted into numerical
-                        features using TF-IDF.
-                    </p>
-
-                </div>
-
-                <div class="step">
-
-                    <div class="step-number">3</div>
-
-                    <h3>ML Prediction</h3>
-
-                    <p>
-                        The trained machine learning model analyzes
-                        the news content.
-                    </p>
-
-                </div>
-
-                <div class="step">
-
-                    <div class="step-number">4</div>
-
-                    <h3>Get Result</h3>
-
-                    <p>
-                        The system predicts whether the news is likely
-                        fake or real.
-                    </p>
-
-                </div>
-
-            </div>
-
+        <div class="badge">
+            AI POWERED • LIVE WEB VERIFICATION
         </div>
 
-    </div>
+        <h1>Fake News Detector</h1>
+
+        <p class="subtitle">
+            A browser-based tool that analyzes news articles and compares
+            their claims with currently available online evidence.
+        </p>
+
+        <section class="card">
+
+            <h2>Verification Service</h2>
+
+            <p>
+                The Flask backend is running successfully. The Chrome extension
+                can send article information to this service for live evidence
+                analysis.
+            </p>
+
+            <div class="features">
+
+                <div class="feature">
+                    <strong>Live Evidence</strong>
+                    <span>
+                        Searches current online news coverage.
+                    </span>
+                </div>
+
+                <div class="feature">
+                    <strong>Source Comparison</strong>
+                    <span>
+                        Compares the article with reports from different sources.
+                    </span>
+                </div>
+
+                <div class="feature">
+                    <strong>Evidence Analysis</strong>
+                    <span>
+                        Calculates an evidence-strength score from the results.
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="status">
+                ✓ Verification service is running
+            </div>
+
+        </section>
+
+        <div class="footer">
+            This system provides evidence-based verification assistance and
+            does not guarantee that a claim is true or false.
+        </div>
+
+    </main>
 
 </body>
-
 </html>
