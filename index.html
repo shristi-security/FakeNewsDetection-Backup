@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fake News Detection</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 50px auto;
+            background: #f8fafc;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 12px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0f172a;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #475569;
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            padding: 18px;
+            box-sizing: border-box;
+            border: 1.5px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            color: #1e293b;
+            background: #ffffff;
+            resize: vertical;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        button {
+            display: block;
+            margin: 22px auto;
+            padding: 14px 38px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.30);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .result.fake {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+        }
+
+        .result.real {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        .prediction-text {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .result-explanation {
+            margin: 10px 0 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.5;
+        }
+
+        .how-it-works {
+            margin-top: 45px;
+            padding-top: 30px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            color: #0f172a;
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 18px 12px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .step-number {
+            width: 34px;
+            height: 34px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step h3 {
+            color: #1e293b;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .step p {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        @media (max-width: 700px) {
+
+            .container {
+                width: 90%;
+                padding: 25px;
+                box-sizing: border-box;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            textarea {
+                height: 180px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .step {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="badge">NLP & MACHINE LEARNING</div>
+
+        <h1>Fake News Detection</h1>
+
+        <p class="subtitle">
+            Analyze news content using Natural Language Processing and Machine Learning.
+        </p>
+
+        <form method="POST">
+
+            <textarea
+                name="news"
+                placeholder="Paste or type the news article here..."
+                required
+            ></textarea>
+
+            <button type="submit">
+                Check News
+            </button>
+
+        </form>
+
+        {% if prediction %}
+
+            <div class="result
+                {% if 'FAKE NEWS' in prediction %}
+                    fake
+                {% else %}
+                    real
+                {% endif %}
+            ">
+
+                <div class="prediction-text">
+                    {{ prediction }}
+                </div>
+
+                {% if 'FAKE NEWS' in prediction %}
+
+                    <p class="result-explanation">
+                        The model predicts that this article is likely to contain
+                        patterns associated with fake news.
+                    </p>
+
+                {% else %}
+
+                    <p class="result-explanation">
+                        The model predicts that this article is likely to contain
+                        patterns associated with real news.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        <div class="how-it-works">
+
+            <h2>How It Works</h2>
+
+            <div class="steps">
+
+                <div class="step">
+
+                    <div class="step-number">1</div>
+
+                    <h3>Enter News</h3>
+
+                    <p>
+                        Paste or type a news article into the text box.
+                    </p>
+
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">2</div>
+
+                    <h3>NLP Processing</h3>
+
+                    <p>
+                        The text is cleaned and converted into numerical
+                        features using TF-IDF.
+                    </p>
+
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">3</div>
+
+                    <h3>ML Prediction</h3>
+
+                    <p>
+                        The trained machine learning model analyzes
+                        the news content.
+                    </p>
+
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">4</div>
+
+                    <h3>Get Result</h3>
+
+                    <p>
+                        The system predicts whether the news is likely
+                        fake or real.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

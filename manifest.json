@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Fake News Detector",
+    "version": "1.0",
+    "description": "Detect whether a news article is likely to be fake or real using machine learning.",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "http://127.0.0.1:5000/*"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    }
+}
